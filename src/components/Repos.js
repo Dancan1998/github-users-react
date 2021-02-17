@@ -41,8 +41,8 @@ const Repos = () => {
   return (
     <section className="setion">
       <Wrapper className="section-center">
-        {/* <ExampleChart data={chartData} />; */}
         <Pie3D data={languages} />
+        <Doughnut2D data={chartData} />
       </Wrapper>
     </section>
   );

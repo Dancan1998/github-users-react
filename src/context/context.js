@@ -14,7 +14,7 @@ const GithubProvider = ({ children }) => {
   const [followers, setFollowers] = useState(mockFollowers);
   //requests and loading
   const [request, setRequest] = useState(0);
-  const [loading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   //error
   const [error, setError] = useState({ show: false, msg: "" });
 
@@ -39,11 +39,14 @@ const GithubProvider = ({ children }) => {
   }
   const searchGithubUser = async (user) => {
     toggleError();
+    setIsLoading(true);
     try {
       const response = await axios.get(`${rootUrl}/users/${user}`);
       if (response) {
         setGithubUser(response.data);
       }
+      setIsLoading(false);
+      checkRequestsLimit();
     } catch (error) {
       toggleError(true, "there is no user with that username");
     }
@@ -53,7 +56,15 @@ const GithubProvider = ({ children }) => {
   });
   return (
     <GithubContext.Provider
-      value={{ request, githubUser, repos, followers, error, searchGithubUser }}
+      value={{
+        request,
+        githubUser,
+        repos,
+        followers,
+        error,
+        searchGithubUser,
+        isLoading,
+      }}
     >
       {children}
     </GithubContext.Provider>

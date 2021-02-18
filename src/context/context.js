@@ -43,7 +43,23 @@ const GithubProvider = ({ children }) => {
     try {
       const response = await axios.get(`${rootUrl}/users/${user}`);
       if (response) {
+        //https://api.github.com/users/john-smilga/repos?per_page=100
+        //https://api.github.com/users/john-smilga/followers
         setGithubUser(response.data);
+        const { login, followers_url } = response.data;
+        try {
+          const response = await axios.get(
+            `${rootUrl}/users/${login}/repos?per_page=100`
+          );
+        } catch (error) {
+          console.error(error);
+        }
+        try {
+          const response = await axios.get(`${followers_url}?per_page=100`);
+          setFollowers(response.data);
+        } catch (error) {
+          console.error(error);
+        }
       }
       setIsLoading(false);
       checkRequestsLimit();

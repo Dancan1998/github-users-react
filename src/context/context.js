@@ -51,6 +51,7 @@ const GithubProvider = ({ children }) => {
           const response = await axios.get(
             `${rootUrl}/users/${login}/repos?per_page=100`
           );
+          setRepos(response.data);
         } catch (error) {
           console.error(error);
         }

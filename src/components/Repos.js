@@ -4,6 +4,7 @@ import { GithubContext } from "../context/context";
 import { ExampleChart, Pie3D, Column3D, Bar3D, Doughnut2D } from "./Charts";
 const Repos = () => {
   const { repos } = React.useContext(GithubContext);
+
   const languages = repos.reduce((total, item) => {
     const { language, stargazers_count } = item;
     if (!language) return total;
@@ -36,13 +37,12 @@ const Repos = () => {
     })
     .slice(0, 5);
 
+  // stars, forks
+
   let { stars, forks } = repos.reduce(
     (total, item) => {
       const { stargazers_count, name, forks } = item;
-      total.stars[stargazers_count] = {
-        label: name,
-        value: stargazers_count,
-      };
+      total.stars[stargazers_count] = { label: name, value: stargazers_count };
       total.forks[forks] = { label: name, value: forks };
       return total;
     },
@@ -52,26 +52,11 @@ const Repos = () => {
     }
   );
 
-  stars = Object.values(stars).slice(-5).reverse();
-  forks = Object.values(forks).slice(-5).reverse();
-
-  const chartData = [
-    {
-      label: "HTML",
-      value: "15",
-    },
-    {
-      label: "CSS",
-      value: "160",
-    },
-    {
-      label: "Javascript",
-      value: "70",
-    },
-  ];
+  stars = Object.values(stars).slice(0, 5);
+  forks = Object.values(forks).slice(0, 5);
 
   return (
-    <section className="setion">
+    <section className="section">
       <Wrapper className="section-center">
         <Pie3D data={mostUsed} />
         <Column3D data={stars} />
@@ -89,11 +74,9 @@ const Wrapper = styled.div`
   @media (min-width: 800px) {
     grid-template-columns: 1fr 1fr;
   }
-
   @media (min-width: 1200px) {
     grid-template-columns: 2fr 3fr;
   }
-
   div {
     width: 100% !important;
   }

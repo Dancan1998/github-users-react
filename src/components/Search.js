@@ -4,8 +4,13 @@ import { MdSearch } from "react-icons/md";
 import { GithubContext } from "../context/context";
 const Search = () => {
   const [user, setUser] = React.useState("");
-  const { request, error } = React.useContext(GithubContext);
-  const handleSubmit = () => {};
+  const { request, error, searchGithubUser } = React.useContext(GithubContext);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (user) {
+      searchGithubUser(user);
+    }
+  };
   return (
     <section className="section">
       <Wrapper className="section-center">

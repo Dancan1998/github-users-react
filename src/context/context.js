@@ -37,12 +37,23 @@ const GithubProvider = ({ children }) => {
   function toggleError(show = false, msg = "") {
     setError({ show, msg });
   }
+  const searchGithubUser = async (user) => {
+    toggleError();
+    try {
+      const response = await axios.get(`${rootUrl}/users/${user}`);
+      if (response) {
+        setGithubUser(response.data);
+      }
+    } catch (error) {
+      toggleError(true, "there is no user with that username");
+    }
+  };
   useEffect(() => {
     checkRequestsLimit();
-  }, []);
+  });
   return (
     <GithubContext.Provider
-      value={{ request, githubUser, repos, followers, error }}
+      value={{ request, githubUser, repos, followers, error, searchGithubUser }}
     >
       {children}
     </GithubContext.Provider>
